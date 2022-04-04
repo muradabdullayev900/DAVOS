@@ -17,6 +17,14 @@ class UserAccountManager(BaseUserManager):
         return user
 
 
+    def create_superuser(self, email, password, **extra_fields):
+        user = self.create_user(email, password, **extra_fields)
+        user.is_staff = True
+        user.is_superuser = True
+        user.save()
+        return user
+
+
 class UserAccount(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(max_length=255, unique=True)
     first_name = models.CharField(max_length=255, default='None')
@@ -37,3 +45,11 @@ class UserAccount(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return self.email
+
+
+class Profile(models.Model):
+    user = models.OneToOneField(UserAccount, on_delete=models.CASCADE)
+    image = models.ImageField(default='default.jpg', upload_to='profile_pics')
+
+    def __str__(self):
+        return f'{self.user.email} Profile'

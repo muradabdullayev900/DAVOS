@@ -34,6 +34,7 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'users.apps.UsersConfig',
+    'forum.apps.ForumConfig',
     'rest_framework',
     'djoser',
     'corsheaders',
@@ -47,9 +48,12 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt.token_blacklist'
 ]
 
-CORS_ORIGIN_ALLOW_ALL = True
-ALLOWED_HOSTS = ['*']
+# CORS_ORIGIN_ALLOW_ALL = True
+# ALLOWED_HOSTS = ['*']
 
+CORS_ORIGIN_WHITELIST = [
+     'http://localhost:3000'
+]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -97,9 +101,9 @@ WSGI_APPLICATION = 'DAVOS.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'development',
+        'NAME': 'davos',
         'USER': 'root',
-        'PASSWORD': 'Blockbuster2002',
+        'PASSWORD': 'LiveLaugh2002',
         'HOST': 'localhost',
     }
 }
@@ -160,13 +164,16 @@ STATICFILES_DIRS = [
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 REST_FRAMEWORK = {
-    'DEFAULT_PERMISSION_CLASSES': [
-            'rest_framework.permissions.IsAuthenticated'
-        ],
+    # 'DEFAULT_PERMISSION_CLASSES': [
+    #         'rest_framework.permissions.IsAuthenticated'
+    # ],
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
 }
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
 
 SIMPLE_JWT = {
     'AUTH_HEADER_TYPES': ('JWT',),
