@@ -25,9 +25,17 @@ const Navbar = ({ logout, isAuthenticated }) => {
     );
 
     const authLinks = () => (
-        <Button href="#!" color="inherit" variant="outlined" onClick={ logout } sx={{ my: 1, mx: 1.5 }}>
-            ÇIXIŞ
-        </Button>
+        <Fragment>
+            <Button href="/forum" color="inherit" variant="outlined" sx={{ my: 1, mx: 1.5 }}>
+                FORUM
+            </Button>
+            <Button href="/profile" color="inherit" variant="outlined" sx={{ my: 1, mx: 1.5 }}>
+                PROFİL
+            </Button>
+            <Button href="#!" color="inherit" variant="outlined" onClick={ logout } sx={{ my: 1, mx: 1.5 }}>
+                ÇIXIŞ
+            </Button>
+        </Fragment>
     );
 
     return (
