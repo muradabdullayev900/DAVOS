@@ -14,7 +14,11 @@ import {
     SIGNUP_FAIL,
     ACTIVATION_SUCCESS,
     ACTIVATION_FAIL,
-    LOGOUT
+    LOGOUT,
+    PROFILE_LOADED_FAIL,
+    PROFILE_LOADED_SUCCESS,
+    PROFILE_UPDATED_FAIL,
+    PROFILE_UPDATED_SUCCESS
 } from './types';
 
 export const checkAuthenticated = () => async dispatch => {
@@ -193,4 +197,59 @@ export const logout = () => dispatch => {
     dispatch({
         type: LOGOUT
     })
+}
+
+export const fetchUserProfile = () => async dispatch => {
+    if (localStorage.getItem('access')) {
+        const config = {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `JWT ${localStorage.getItem('access')}`,
+                'Accept': 'application/json'
+            }
+        }
+        try {
+            const res = await axios.get(`${process.env.REACT_APP_API_URL}/api/profile`, config)
+            dispatch({
+                type: PROFILE_LOADED_SUCCESS,
+                payload: res.data
+            })
+        } catch (err) {
+            dispatch({
+                type: PROFILE_LOADED_FAIL
+            })
+        } 
+    } else {
+        dispatch({
+            type: PROFILE_LOADED_FAIL
+        })
+    }
+}
+
+export const updateUserProfile = (updatedProfile) => async dispatch => {
+    if (localStorage.getItem('access')) {
+        const config = {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `JWT ${localStorage.getItem('access')}`,
+                'Accept': 'application/json'
+            }
+        }
+        try {
+            const res = await axios.patch(`${process.env.REACT_APP_API_URL}/api/profile/`, updatedProfile, config)
+            alert("Profile Updated Successfully");
+            dispatch({
+                type: PROFILE_UPDATED_SUCCESS,
+            })
+        } catch (err) {
+            alert("Something Went Wrong... Try Again");
+            dispatch({
+                type: PROFILE_UPDATED_FAIL
+            })
+        } 
+    } else {
+        dispatch({
+            type: PROFILE_LOADED_FAIL
+        })
+    }
 }

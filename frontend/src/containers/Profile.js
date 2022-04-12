@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
@@ -7,10 +7,13 @@ import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { makeStyles } from '@mui/styles';
-import Avatar from 'react-avatar';
 import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
+import { fetchUserProfile, updateUserProfile } from '../actions/auth';
+import { connect } from 'react-redux';
+import validator from 'validator';
+import ErrorIcon from '@mui/icons-material/Error';
 
 
 
@@ -22,32 +25,107 @@ const useStyles = makeStyles((theme) => ({
       borderRadius: '50%',
       marginBottom: '5px',
     },
+    alert: {
+      textAlign: 'left',
+      fontSize: '12px',
+      color: 'red',
+    }
 }));
 
-export default function Profile() {
+function Profile({profileData, fetchUserProfile, updateUserProfile}) {
     const theme = useTheme();
     const classes = useStyles();
+    const [formUpdated, setFormUpdated] = useState(false)
+    const [formData, setFormData] = useState({
+      first_name: '',
+      last_name: '',
+      email: '',
+      // image: null
+    });
+    const [errors, setErrors] = useState(false);
+    const [errorsContent, setErrorsContent] = useState('');
+
+    const { first_name, last_name, email} = formData;
+
+    const onChange = e => setFormData({...formData, [e.target.name]: e.target.value});
+
+    const handleImageChange = (e) => {
+      setFormData({...formData,
+        image: e.target.files[0]
+      })
+    };
+
+    const onSubmit = e => {
+      e.preventDefault();
+      if (validate()) {
+        let updatedProfile = {}
+        for (let key in formData) {
+          if (formData[key] !== '' || formData[key] !== null) {
+            updatedProfile[key] = formData[key]
+          }
+          else {
+            updatedProfile[key] = profileData[key]
+          }
+        }
+        updateUserProfile(updatedProfile)
+        setFormUpdated(true)
+      }
+    };
+
+    const validate = () => {
+      let errors = {};
+      let errorsContent = {"name":false,"email":false};
+      let isValid = true;
+      if (!first_name || !last_name){
+        isValid = false;
+        errors["name"] = true;
+        errorsContent["name"] = "Ad və Soyad daxil edin.";
+      }
+      if (!validator.isEmail(email)) {
+        isValid = false;
+        errors["email"] = true;
+        errorsContent["email"] = "E-poçt ünvanı etibarlı deyil.";
+      }
+      if (email.length < 6){
+        isValid = false;
+        errors["email"] = true;
+        errorsContent["email"] = "E-poçt ünvanı üçün 6 və daha artıq simvoldan istifadə edin.";
+      }
+      if (!email) {
+        isValid = false;
+        errors["email"] = true;
+        errorsContent["email"] = "E-poçt ünvanı daxil edin.";
+      }
+      setErrors(errors);
+      setErrorsContent(errorsContent);
+      return isValid;
+    }
+
+    useEffect(() => {
+      fetchUserProfile()
+    }, []);
   
-    return (
+    return ( profileData ?
     <Container component="main" maxWidth="lg">
       <Card sx={{ display: 'flex', margin: theme.spacing(5), padding: theme.spacing(2) }}>
         <CardMedia
-          alt="Tom Cruise"
-        >
-        <Avatar name="Tom Cruise" size="100" textSizeRatio={1.2} 
-          className={classes.profile} color="#2f2fa2"/>
-        </CardMedia>
+          component="img"
+          sx={{ width: 151 }}
+          // image={profileData.image}
+          alt="Profile Picture"
+        />
         <Box sx={{ flexDirection: 'column' }}>
           <CardContent sx={{ flex: '1 0 auto' }}>
             <Typography component="div" variant="h5">
-              Tom Cruise
+              {profileData.first_name} {profileData.last_name}
             </Typography>
             <Typography variant="subtitle1" color="text.secondary" component="div">
-              tom.cruise.tc234@gmail.com
+              {profileData.email}
             </Typography>
           </CardContent>
         </Box>
       </Card>
+      <Box component="form" noValidate onSubmit={e => onSubmit(e)} sx={{ mt: 3 }}>
       <Grid container spacing={2}>
         <Grid item xs={12} sm={6}>
             <TextField
@@ -58,7 +136,10 @@ export default function Profile() {
             id="first_name"
             label="Ad"
             autoFocus
+            value={first_name}
+            onChange={e => onChange(e)}
             />
+            {errors["name"] && <div className={classes.alert}> {<ErrorIcon fontSize="small"/>} {errorsContent["name"]} </div>}
         </Grid>
         <Grid item xs={12} sm={6}>
             <TextField
@@ -68,6 +149,8 @@ export default function Profile() {
             label="Soyad"
             name='last_name'
             autoComplete="family-name"
+            value={last_name}
+            onChange={e => onChange(e)}
             />
         </Grid>
         <Grid item xs={12}>
@@ -78,8 +161,14 @@ export default function Profile() {
             label="E-poçt"
             name='email'
             autoComplete="email"
+            value={email}
+            onChange={e => onChange(e)}
             />
+            {errors["email"] && <div className={classes.alert}>{<ErrorIcon fontSize="small"/>} {errorsContent["email"]}</div>}
         </Grid>
+        {/* <input type="file"
+          id="image"
+          accept="image/png, image/jpeg"  onChange={e => handleImageChange(e)} required/> */}
         <Button
           type="submit"
           fullWidth
@@ -89,6 +178,15 @@ export default function Profile() {
           YENİLƏ
         </Button>
       </Grid>
+      </Box>
     </Container>
+    : <></>
     );
   }
+
+const mapStateToProps = state => ({
+  profileData: state.auth.profileData
+})
+
+
+export default connect(mapStateToProps, { fetchUserProfile, updateUserProfile })(Profile);

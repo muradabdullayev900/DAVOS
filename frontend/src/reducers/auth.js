@@ -3,6 +3,8 @@ import {
     LOGIN_FAIL,
     USER_LOADED_SUCCESS,
     USER_LOADED_FAIL,
+    PROFILE_LOADED_SUCCESS,
+    PROFILE_LOADED_FAIL,
     AUTHENTICATED_SUCCESS,
     AUTHENTICATED_FAIL,
     PASSWORD_RESET_SUCCESS,
@@ -21,6 +23,7 @@ const initialState = {
     refresh: localStorage.getItem('refresh'),
     isAuthenticated: null,
     user: null,
+    profileData: null,
     failed: null
 };
 
@@ -51,6 +54,11 @@ export default function(state = initialState, action) {
                 ...state,
                 user: payload
             }
+        case PROFILE_LOADED_SUCCESS:
+            return {
+                ...state,
+                profileData: payload
+            }
         case AUTHENTICATED_FAIL:
             return {
                 ...state,
@@ -61,6 +69,11 @@ export default function(state = initialState, action) {
                 ...state,
                 user: null
             }
+        case PROFILE_LOADED_FAIL:
+            return {
+                ...state,
+                profileData: null
+            }
         case LOGIN_FAIL:
             localStorage.removeItem('access');
             localStorage.removeItem('refresh');
@@ -70,6 +83,7 @@ export default function(state = initialState, action) {
                 refresh: null,
                 isAuthenticated: null,
                 user: null,
+                profileData: null,
                 failed: true
             }
         case SIGNUP_FAIL:
@@ -81,6 +95,7 @@ export default function(state = initialState, action) {
                 access: null,
                 refresh: null,
                 isAuthenticated: null,
+                profileData: null,
                 user: null
             }
         case PASSWORD_RESET_SUCCESS:
