@@ -6,12 +6,12 @@ from rest_framework_simplejwt.serializers import TokenVerifySerializer
 from rest_framework.response import Response
 from rest_framework import status
 from django.shortcuts import get_object_or_404
+from rest_framework.parsers import MultiPartParser, FormParser
+
 
 from .models import UserAccount, Profile
 
 from .serializers import UserProfileSerializer
-
-# from .forms import ProfileUpdateForm, UserUpdateForm
 
 User = get_user_model()
 # Create your views here.
@@ -21,25 +21,25 @@ class UserProfileView(generics.RetrieveUpdateAPIView):
     queryset = UserAccount.objects.all()
     permission_classes = (IsAuthenticated,)
     authentication_classes = (JWTAuthentication,)
+    parser_classes = (MultiPartParser, FormParser)
 
     def retrieve(self, request, *args, **kwargs):
+        # instance = self.request.user
+        # user_id = UserAccount.objects.get(email=instance).id
+        # profile = Profile.objects.get(user_id=user_id)
+        # serializer = UserProfileSerializer(profile)
+        # print(serializer.data)
+        # return Response(serializer.data)
         instance = self.request.user
-        user_id = UserAccount.objects.get(email=instance).id
-        profile = Profile.objects.get(user_id=user_id)
-        serializer = UserProfileSerializer(profile)
+        serializer = self.get_serializer(instance)
         return Response(serializer.data)
 
     def update(self, request, *args, **kwargs):
         instance = request.user
         # Disabling The Updation Of Username
         # request.data['email'] = instance.email
-        user_id = UserAccount.objects.get(email=instance).id
-        profile = Profile.objects.get(user_id=user_id)
-        print(profile)
         serializer = UserProfileSerializer(instance, data=request.data)
-        print(serializer)
-        print(serializer.is_valid())
-        print(serializer.errors)
+        serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data)
 

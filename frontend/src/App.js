@@ -13,6 +13,7 @@ import Posts from './containers/Posts';
 import { Provider } from 'react-redux';
 import store from './store';
 import PostContextProvider from './contexts/ForumContext';
+import './App.css';
 
 
 function App() {

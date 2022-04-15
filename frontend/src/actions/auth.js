@@ -210,6 +210,7 @@ export const fetchUserProfile = () => async dispatch => {
         }
         try {
             const res = await axios.get(`${process.env.REACT_APP_API_URL}/api/profile`, config)
+            console.log(res.data)
             dispatch({
                 type: PROFILE_LOADED_SUCCESS,
                 payload: res.data
@@ -226,23 +227,29 @@ export const fetchUserProfile = () => async dispatch => {
     }
 }
 
-export const updateUserProfile = (updatedProfile) => async dispatch => {
+export const updateUserProfile = (data) => async dispatch => {
     if (localStorage.getItem('access')) {
+        let form_data = new FormData();
+        if (data.image)
+            form_data.append("image", data.image, 
+            data.image.name);
+        form_data.append("first_name", data.first_name);
+        form_data.append("last_name", data.last_name);
+        form_data.append("email", data.email);
         const config = {
             headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `JWT ${localStorage.getItem('access')}`,
-                'Accept': 'application/json'
+                'Content-Type': 'multipart/form-data',
+                'Authorization': `JWT ${localStorage.getItem('access')}`
             }
         }
         try {
-            const res = await axios.patch(`${process.env.REACT_APP_API_URL}/api/profile/`, updatedProfile, config)
-            alert("Profile Updated Successfully");
+            const res = await axios.patch(`${process.env.REACT_APP_API_URL}/api/profile/`, form_data, config)
+            // alert("Profile Updated Successfully");
             dispatch({
                 type: PROFILE_UPDATED_SUCCESS,
             })
         } catch (err) {
-            alert("Something Went Wrong... Try Again");
+            // alert("Something Went Wrong... Try Again");
             dispatch({
                 type: PROFILE_UPDATED_FAIL
             })

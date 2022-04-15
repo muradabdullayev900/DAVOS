@@ -13,17 +13,19 @@ class UserCreateSerializer(UserCreateSerializer):
 
 
 class UserProfileSerializer(serializers.ModelSerializer):
-    # image = serializers.SerializerMethodField()
+    image = serializers.SerializerMethodField()
 
-    # image = serializers.ImageField(
-    #     max_length=None,
-    #     use_url=True
-    # )
+    image = serializers.ImageField(
+        source='profile.image',
+        required=False,
+        max_length=None,
+        use_url=True
+    )
 
     class Meta:
         model = UserAccount
-        # fields = ('email', 'first_name', 'last_name', 'image')
-        fields = ('email', 'first_name', 'last_name')
+        fields = ('email', 'first_name', 'last_name', 'image')
+        # fields = ('email', 'first_name', 'last_name')
 
     def update(self, instance, validated_data):
         profile_data = validated_data.pop('profile', None)

@@ -15,7 +15,9 @@ import {
     SIGNUP_FAIL,
     ACTIVATION_SUCCESS,
     ACTIVATION_FAIL,
-    LOGOUT
+    LOGOUT,
+    PROFILE_UPDATED_SUCCESS,
+    PROFILE_UPDATED_FAIL
 } from '../actions/types';
 
 const initialState = {
@@ -57,7 +59,8 @@ export default function(state = initialState, action) {
         case PROFILE_LOADED_SUCCESS:
             return {
                 ...state,
-                profileData: payload
+                profileData: payload,
+                updateSuccess: false
             }
         case AUTHENTICATED_FAIL:
             return {
@@ -72,7 +75,8 @@ export default function(state = initialState, action) {
         case PROFILE_LOADED_FAIL:
             return {
                 ...state,
-                profileData: null
+                profileData: null,
+                updateSuccess: false
             }
         case LOGIN_FAIL:
             localStorage.removeItem('access');
@@ -84,7 +88,20 @@ export default function(state = initialState, action) {
                 isAuthenticated: null,
                 user: null,
                 profileData: null,
-                failed: true
+                failed: true,
+                updateSuccess: false
+            }
+        case PROFILE_UPDATED_SUCCESS:
+            return {
+                ...state,
+                profileData: payload,
+                updateSuccess: true
+            }
+        case PROFILE_UPDATED_FAIL:
+            return {
+                ...state,
+                profileData: payload,
+                updateSuccess: false
             }
         case SIGNUP_FAIL:
         case LOGOUT:
@@ -96,7 +113,8 @@ export default function(state = initialState, action) {
                 refresh: null,
                 isAuthenticated: null,
                 profileData: null,
-                user: null
+                user: null,
+                updateSuccess: false
             }
         case PASSWORD_RESET_SUCCESS:
         case PASSWORD_RESET_FAIL:

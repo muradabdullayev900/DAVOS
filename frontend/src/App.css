@@ -36,3 +36,21 @@
     transform: rotate(360deg);
   }
 }
+
+.file-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  display: inline-block;
+  max-width: 300px;
+  vertical-align: middle;
+}
+
+.btn-upload {
+  position: absolute !important;
+  right: 10px;
+}
+
+.btn-choose {
+  margin-right: 10px !important;
+}
