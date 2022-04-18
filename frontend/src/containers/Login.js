@@ -76,7 +76,7 @@ const Login = ({ login, isAuthenticated, failed }) => {
     // Navigate them to the home page
 
     if (isAuthenticated) {
-        return <Navigate to='/' />
+        return <Navigate to='/forum' />
     }
 
     return (

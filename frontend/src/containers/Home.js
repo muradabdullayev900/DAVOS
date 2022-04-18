@@ -41,7 +41,7 @@ const Home = () => {
                 spacing={2}
                 justifyContent="center"
                 >
-                <Button variant="contained" onClick={() => handleClick("/login")}>BAŞLA</Button>
+                <Button variant="contained" onClick={() => handleClick("/forum")}>BAŞLA</Button>
                 </Stack>
             </Container>
         </ThemeProvider>
