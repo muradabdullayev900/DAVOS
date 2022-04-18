@@ -26,6 +26,9 @@ const Navbar = ({ logout, isAuthenticated }) => {
 
     const authLinks = () => (
         <Fragment>
+            <Button href="/forum/create-new-post" color="inherit" variant="outlined" sx={{ my: 1, mx: 1.5 }}>
+                YENİ POST
+            </Button>
             <Button href="/forum" color="inherit" variant="outlined" sx={{ my: 1, mx: 1.5 }}>
                 FORUM
             </Button>

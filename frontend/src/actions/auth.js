@@ -210,7 +210,6 @@ export const fetchUserProfile = () => async dispatch => {
         }
         try {
             const res = await axios.get(`${process.env.REACT_APP_API_URL}/api/profile`, config)
-            console.log(res.data)
             dispatch({
                 type: PROFILE_LOADED_SUCCESS,
                 payload: res.data

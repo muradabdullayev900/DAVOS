@@ -1,29 +1,42 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
 import Card from '@mui/material/Card';
 import CardActionArea from '@mui/material/CardActionArea';
+import CardHeader from '@mui/material/CardHeader';
 import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
+import Avatar from '@mui/material/Avatar';
+import { red } from '@mui/material/colors';
+import TextTruncate from 'react-text-truncate';
+import Divider from '@mui/material/Divider';
+
 
 function Post(props) {
   const { post } = props;
 
   return (
     <Grid item xs={12} md={6}>
-      <CardActionArea component="a" href="#">
-        <Card sx={{ display: 'flex' }}>
-          <CardContent sx={{ flex: 1 }}>
-            <Typography component="h2" variant="h5">
+      <CardActionArea component="a" href={"/forum/view/" + post.slug}>
+        <Card>
+          <CardHeader
+          avatar={
+            <Avatar alt={post.author_full_name} src={process.env.REACT_APP_API_URL + '/media/' + post.user_profile} />
+          }
+          title={post.author_full_name}
+          subheader={new Date(post.published_on).toDateString()}
+          />
+          <Divider />
+          <CardContent>
+            <Typography variant="h5" paragraph sx={{fontWeight: 'bold'}}>
               {post.title}
             </Typography>
-            <Typography variant="subtitle1" color="text.secondary">
-              {post.date_posted}
-            </Typography>
-            <Typography variant="subtitle1" paragraph>
-              {post.content}
-            </Typography>
+            <TextTruncate
+                line={2}
+                element="span"
+                truncateText="..."
+                text={post.content}
+            />
           </CardContent>
           {/* <CardMedia
             component="img"

@@ -221,11 +221,6 @@ function Profile({profileData, updateSuccess, fetchUserProfile, updateUserProfil
         <DialogTitle>
         <CheckCircleIcon style={{ color: green[500], fontSize: '2rem', verticalAlign: 'middle'}} />
         İstifadəçi məlumatlarınız uğurla yeniləndi!</DialogTitle>
-        {/* <DialogContent>
-          <DialogContentText>
-            Təbriklər! Siz {challenge.score} xal qazandınız. Qazandığınız xalları Profil bölməsində görə bilərsiniz.
-          </DialogContentText>
-        </DialogContent> */}
       </Dialog>
       <Dialog
         open={errorMessage}
@@ -241,11 +236,6 @@ function Profile({profileData, updateSuccess, fetchUserProfile, updateUserProfil
         <DialogTitle>
         <ErrorIcon style={{ color: red[500], fontSize: '2rem', verticalAlign: 'middle'}}/>
         İstifadəçi məlumatlarınız yenilənə bilmədi!</DialogTitle>
-        {/* <DialogContent>
-          <DialogContentText >
-            Təəssüf ki, doğru cavab vermədiniz. Bir daha sınayın.
-          </DialogContentText>
-        </DialogContent> */}
       </Dialog>
       </Box>
     </Container>
