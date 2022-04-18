@@ -14,6 +14,7 @@ import PostContextProvider from './contexts/ForumContext';
 import CreatePost from './containers/Post/CreatePost';
 import './App.css';
 import PostDetail from './containers/Post/PostDetail';
+import EditPost from './containers/Post/EditPost';
 
 
 function App({isAuthenticated}) {
@@ -33,6 +34,7 @@ function App({isAuthenticated}) {
         <Fragment>
           <Route exact path='/profile' element={<Profile/>} />
           <Route exact path="/forum/create-new-post" element={<CreatePost />} />
+          <Route exact path="/forum/:slug/edit" element={<EditPost />} />
         </Fragment>
         : null}
       </Routes>

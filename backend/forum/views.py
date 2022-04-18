@@ -10,7 +10,8 @@ from rest_framework import generics
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
-from rest_framework_simplejwt.serializers import TokenVerifySerializer
+from rest_framework_simplejwt.serializers import TokenVerifySerializer, TokenObtainPairSerializer, TokenObtainSerializer
+from rest_framework_simplejwt.authentication import JWTAuthentication
 
 # class PostListView(viewsets.ModelViewSet):
 #     serializer_class = PostListSerializer
@@ -79,20 +80,20 @@ def post_update_view(request):
 
         updated_data = request.data
         instance = Post.objects.get(slug=updated_data.get('slug'))
-        admin_user = UserAccount.objects.get(pk=1)  # PK Of Admin User Is 1
+        # admin_user = UserAccount.objects.get(pk=1)  # PK Of Admin User Is 1
 
-        if(instance.author == logged_in_user or logged_in_user == admin_user):
-            updated_data.pop('slug')
-            serializer = PostUpdateSerializer(instance, data=updated_data)
+        # if(instance.author == logged_in_user or logged_in_user == admin_user):
+        updated_data.pop('slug')
+        serializer = PostUpdateSerializer(instance, data=updated_data)
 
-            if serializer.is_valid():
-                serializer.save()
-                return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
-            else:
-                return Response({'detail': 'Something Went Wrong.'}, status=status.HTTP_400_BAD_REQUEST)
-
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
         else:
-            return Response({'detail': 'You Are Not Authorised To Edit This Post'}, status.HTTP_403_FORBIDDEN)
+            return Response({'detail': 'Something Went Wrong.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        # else:
+        #     return Response({'detail': 'You Are Not Authorised To Edit This Post'}, status.HTTP_403_FORBIDDEN)
 
     else:
         return Response({'detail': 'You Are Not Authorised To Edit This Post'}, status.HTTP_403_FORBIDDEN)
@@ -118,11 +119,11 @@ def post_delete_view(request):
         instance = Post.objects.get(slug=request.data.get('slug'))
         admin_user = UserAccount.objects.get(pk=1)  # PK Of Admin User Is 1
 
-        if(instance.author == logged_in_user or logged_in_user == admin_user):
-            instance.delete()
-            return Response({}, status=status.HTTP_200_OK)
-        else:
-            return Response({'detail': 'Something Went Wrong.'}, status=status.HTTP_400_BAD_REQUEST)
+        # if(instance.author == logged_in_user or logged_in_user == admin_user):
+        instance.delete()
+        return Response({}, status=status.HTTP_200_OK)
+        # else:
+        #     return Response({'detail': 'Something Went Wrong.'}, status=status.HTTP_400_BAD_REQUEST)
 
     else:
         return Response({'detail': 'You Are Not Authorised To Edit This Post'}, status.HTTP_403_FORBIDDEN)
