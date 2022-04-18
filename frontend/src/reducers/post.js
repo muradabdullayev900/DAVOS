@@ -1,6 +1,8 @@
 import {
     POST_ADDED_SUCCESS,
-    POST_ADDED_FAIL
+    POST_ADDED_FAIL,
+    POST_EDITED_SUCCESS,
+    POST_EDITED_FAIL
 } from '../actions/types';
 
 const initialState = {
@@ -19,6 +21,18 @@ export default function(state = initialState, action) {
                 post: payload
             }
         case POST_ADDED_FAIL:
+            return {
+                ...state,
+                postAdded: false,
+                post: null
+            }
+        case POST_EDITED_SUCCESS:
+            return {
+                ...state,
+                postAdded: false,
+                post: payload
+            }
+        case POST_EDITED_FAIL:
             return {
                 ...state,
                 postAdded: false,

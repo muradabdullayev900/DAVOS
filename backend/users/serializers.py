@@ -24,7 +24,7 @@ class UserProfileSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = UserAccount
-        fields = ('email', 'first_name', 'last_name', 'image')
+        fields = ('id', 'email', 'first_name', 'last_name', 'image')
         # fields = ('email', 'first_name', 'last_name')
 
     def update(self, instance, validated_data):

@@ -7,7 +7,6 @@ import CardActionArea from '@mui/material/CardActionArea';
 import CardHeader from '@mui/material/CardHeader';
 import CardContent from '@mui/material/CardContent';
 import Avatar from '@mui/material/Avatar';
-import { red } from '@mui/material/colors';
 import TextTruncate from 'react-text-truncate';
 import Divider from '@mui/material/Divider';
 
