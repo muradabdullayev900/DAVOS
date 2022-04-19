@@ -27,6 +27,8 @@ const useStyles = makeStyles((theme) => ({
     profile: {
       borderRadius: '50%',
       marginBottom: '5px',
+      height: '150px',
+      width: '150px'
     },
     alert: {
       textAlign: 'left',
@@ -125,6 +127,7 @@ function Profile({profileData, updateSuccess, fetchUserProfile, updateUserProfil
           sx={{ width: 151 }}
           image={profileData.image}
           alt="Profile Picture"
+          className={classes.profile}
         />
         <Box sx={{ flexDirection: 'column' }}>
           <CardContent sx={{ flex: '1 0 auto' }}>

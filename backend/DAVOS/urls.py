@@ -30,7 +30,8 @@ urlpatterns = [
     re_path(r'^auth/', include('djoser.urls')),
     re_path(r'^auth/', include('djoser.urls.jwt')),
     path('api/', include('forum.urls')),
-    path('api/', include('users.urls'))
+    path('api/', include('users.urls')),
+    path('comments/', include('comment.urls'))
 ]
 
 # urlpatterns += [re_path(r'^.*', TemplateView.as_view(template_name='index.html'))]

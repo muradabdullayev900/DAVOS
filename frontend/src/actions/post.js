@@ -3,7 +3,9 @@ import {
     POST_ADDED_SUCCESS,
     POST_ADDED_FAIL,
     POST_EDITED_SUCCESS,
-    POST_EDITED_FAIL
+    POST_EDITED_FAIL,
+    POST_DELETED_SUCCESS,
+    POST_DELETED_FAIL
 } from './types';
 
 
@@ -58,7 +60,37 @@ export const editPost = (postData) => async dispatch => {
         } 
     } else {
         dispatch({
-            type: POST_ADDED_FAIL
+            type: POST_EDITED_FAIL
         })
     }
 }
+
+export const deletePost = (slug) => async dispatch => {
+    if (localStorage.getItem('access')) {
+        const config = {
+            headers: {
+                "Content-Type": "application/json",
+                'Authorization': `JWT ${localStorage.getItem('access')}`,
+            },
+            data: {
+                slug: slug
+            }
+        };
+        try {
+            const res = await axios.delete(`${process.env.REACT_APP_API_URL}/api/delete-post`, config)
+            dispatch({
+                type: POST_DELETED_SUCCESS,
+                payload: res.data
+            })
+        } catch (err) {
+            console.log(err)
+            dispatch({
+                type: POST_DELETED_FAIL
+            })
+        } 
+    } else {
+        dispatch({
+            type: POST_DELETED_FAIL
+        })
+    }
+};

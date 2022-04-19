@@ -16,6 +16,7 @@ import Avatar from '@mui/material/Avatar';
 import { red } from '@mui/material/colors';
 import Divider from '@mui/material/Divider';
 import { fetchUserProfile } from '../../actions/auth';
+import { deletePost } from '../../actions/post';
 import { connect } from 'react-redux';
 import IconButton from '@mui/material/IconButton';
 
@@ -55,14 +56,14 @@ const PostDetail = ({profileData, fetchUserProfile}) => {
                 subheader={new Date(post.published_on).toDateString()}
                 action={
                     post.author === profileData.id ? 
-                    <IconButton>
+                    <Fragment>
                         <Button href={"/forum/" + post.slug + "/edit/"} color="inherit" variant="outlined" sx={{ my: 1, mx: 1.5 }}>
                             YENİLƏ
                         </Button>
-                        <Button href={post.slug + "/edit"} color="inherit" variant="outlined" sx={{ my: 1, mx: 1.5 }}>
+                        <Button href={"/forum/"} onClick={deletePost(post.slug)} color="inherit" variant="outlined" sx={{ my: 1, mx: 1.5 }}>
                             SİL
                         </Button>
-                    </IconButton> : null
+                    </Fragment> : null
                 }
                 >
                 {post.author == profileData.id ? 
@@ -95,4 +96,4 @@ const mapStateToProps = state => ({
 })
   
   
-export default connect(mapStateToProps, { fetchUserProfile})(PostDetail);
+export default connect(mapStateToProps, { fetchUserProfile, deletePost})(PostDetail);
