@@ -21,6 +21,7 @@ def comment_list_view(request, slug):
 def comment_create_view(request, slug):
     post_instance = get_object_or_404(Post, slug=slug)
     request.data['post'] = post_instance.pk
+    request.data['author'] = request.user.pk
     serializer = CommentCreateSerializer(data=request.data)
     if serializer.is_valid():
         serializer.save()

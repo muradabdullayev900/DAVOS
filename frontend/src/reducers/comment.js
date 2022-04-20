@@ -28,5 +28,7 @@ export default function(state = initialState, action) {
                 commentAdded: false,
                 comment: null
             }
+        default:
+            return state
     }
 }
