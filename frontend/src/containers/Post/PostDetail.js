@@ -66,20 +66,18 @@ const PostDetail = ({profileData, fetchUserProfile}) => {
     return (
         <ThemeProvider theme={theme}>
             <CssBaseline />
-            <Container maxWidth="sm">
+            <Container maxWidth="md">
             <Grid 
                     container
                     direction="row"
-                    
+                    justifyContent="center"
                 >
             {post ? profileData ?
-                <Grid item>
+                <Grid item xs={12}>
                 <Card className={classes.root}>
                     <CardHeader
                     avatar={
-                        <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
-                        {post.author_full_name}
-                        </Avatar>
+                        <Avatar alt={post.author_full_name} src={process.env.REACT_APP_API_URL + '/media/' + post.user_profile} />
                     }
                     title={post.author_full_name}
                     subheader={new Date(post.published_on).toDateString()}

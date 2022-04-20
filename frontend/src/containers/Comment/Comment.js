@@ -25,10 +25,10 @@ function Comment(props) {
         <Card> 
         <Grid container wrap="nowrap" spacing={2}>
           <Grid item>
-            <Avatar alt={props.author_full_name} src={process.env.REACT_APP_API_URL + '/media/' + props.user_profile} />
+            <Avatar alt={props.author_full_name} src={process.env.REACT_APP_API_URL + '/media/' + props.userProfile} />
           </Grid>
           <Grid justifyContent="left" item xs zeroMinWidth>
-            <h4 style={{ margin: 0, textAlign: "left" }}>{props.author_full_name}</h4>
+            <h4 style={{ margin: 0, textAlign: "left" }}>{props.name}</h4>
             <p style={{ textAlign: "left" }}>
               {props.body}
             </p>
