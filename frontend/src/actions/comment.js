@@ -8,7 +8,8 @@ import {
     COMMENT_DELETED_FAIL
 } from './types';
 
-export const sendNewCommentToServer = (commentData) => async dispatch => {
+export const sendNewCommentToServer = (commentData, slug, renderWholePage) => async dispatch => {
+
     if (localStorage.getItem('access')) {
         const config = {
             headers: {
@@ -18,7 +19,9 @@ export const sendNewCommentToServer = (commentData) => async dispatch => {
             }
         }
         try {
-            const res = await axios.post(`${process.env.REACT_APP_API_URL}/api/create/<slug>/`, commentData, config)
+            console.log('hello')
+            const res = await axios.post(`${process.env.REACT_APP_API_URL}/comments/create/` + slug + '/', commentData, config)
+            renderWholePage()
             dispatch({
                 type: COMMENT_ADDED_SUCCESS,
                 payload: res.data

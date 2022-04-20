@@ -22,7 +22,7 @@ function Comment(props) {
   const classes = useStyles();
   return (
       <Grid item>
-        <Card> 
+        <Card sx={{ border: 1, borderColor: 'gray' }}> 
         <Grid container wrap="nowrap" spacing={2}>
           <Grid item>
             <Avatar alt={props.author_full_name} src={process.env.REACT_APP_API_URL + '/media/' + props.userProfile} />

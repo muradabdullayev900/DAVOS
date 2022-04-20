@@ -22,6 +22,7 @@ import Comments from '../Comment/Comments';
 import Grid from '@mui/material/Grid';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { createStyles, makeStyles } from '@mui/styles';
+import CreateComment from '../Comment/CreateComment';
 
 
 const useStyles = makeStyles((theme) =>
@@ -63,6 +64,11 @@ const PostDetail = ({profileData, fetchUserProfile}) => {
         getCommentsList();
     }, [])
 
+    const renderWholePage = () => {
+        getPostBody();
+        getCommentsList();
+    }
+
     return (
         <ThemeProvider theme={theme}>
             <CssBaseline />
@@ -74,7 +80,7 @@ const PostDetail = ({profileData, fetchUserProfile}) => {
                 >
             {post ? profileData ?
                 <Grid item xs={12}>
-                <Card className={classes.root}>
+                <Card>
                     <CardHeader
                     avatar={
                         <Avatar alt={post.author_full_name} src={process.env.REACT_APP_API_URL + '/media/' + post.user_profile} />
@@ -115,7 +121,9 @@ const PostDetail = ({profileData, fetchUserProfile}) => {
                 </Card>
                 </Grid>
                 : <></> : <></>}
-                <br></br>
+                {profileData ? 
+                <CreateComment slug={slug} refresh={renderWholePage} profileData={profileData}/>
+                : null }
                 {comments ? 
                 <Comments commentsList={comments} />
                 : null}
