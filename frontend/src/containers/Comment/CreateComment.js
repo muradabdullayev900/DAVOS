@@ -35,6 +35,8 @@ const useStyles = makeStyles((theme) => ({
     },
     width: {
         width: '100%',
+        paddingLeft: '0 !important',
+        paddingRight: '0 !important',
     }
 }));
 
@@ -78,8 +80,7 @@ const CreateComment = ({ slug, refresh, profileData, sendNewCommentToServer }) =
     return (
         <ThemeProvider theme={theme}>
             <CssBaseline />
-            <Container maxWidth="md">
-                <Box component="form" noValidate onSubmit={e => onSubmit(e)}>
+                <Box component="form" noValidate onSubmit={e => onSubmit(e)} className={classes.width}>
                     <Card className={classes.box}>
                         <Grid container wrap="nowrap" spacing={2}>
                             <Grid item>
@@ -117,7 +118,6 @@ const CreateComment = ({ slug, refresh, profileData, sendNewCommentToServer }) =
                         </Grid>
                     </Card>
                 </Box>
-            </Container>
         </ThemeProvider>
     )
 };
