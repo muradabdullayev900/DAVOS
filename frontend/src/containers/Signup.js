@@ -117,7 +117,7 @@ const Signup = ({ signup, isAuthenticated }) => {
         return <Navigate to='/' />
     }
     if (accountCreated) {
-        return <Navigate to='/login' />
+        return <Navigate to={"/verify"} state={{ email }}/>
     }
 
     return (

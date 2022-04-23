@@ -10,7 +10,7 @@ import { makeStyles } from '@mui/styles';
 import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-import { fetchUserProfile, updateUserProfile } from '../actions/auth';
+import { fetchUserProfile, updateUserProfile } from '../../actions/auth';
 import { connect } from 'react-redux';
 import validator from 'validator';
 import ErrorIcon from '@mui/icons-material/Error';
@@ -18,6 +18,9 @@ import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import { green, red } from '@mui/material/colors';
+import ButtonGroup from '@mui/material/ButtonGroup';
+import ChangePassword from './ChangePassword';
+import DeleteAccount from './DeleteAccount';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -50,6 +53,7 @@ function Profile({profileData, updateSuccess, fetchUserProfile, updateUserProfil
     const [errorsContent, setErrorsContent] = useState('');
     const [successMessage, setSuccessMessage] = useState(false);
     const [errorMessage, setErrorMessage] = useState(false);
+    const [option, setOption] = useState(0);
 
     const { first_name, last_name, email} = formData;
 
@@ -80,7 +84,7 @@ function Profile({profileData, updateSuccess, fetchUserProfile, updateUserProfil
       }
     };
 
-    const handleClose = () => {
+    const handleDialogClose = () => {
       setSuccessMessage(false);
       setErrorMessage(false);
     };
@@ -128,7 +132,7 @@ function Profile({profileData, updateSuccess, fetchUserProfile, updateUserProfil
           alt="Profile Picture"
           className={classes.profile}
         />
-        <Box sx={{ flexDirection: 'column' }}>
+        <Box sx={{ flexDirection: 'column', ml: 4 }}>
           <CardContent sx={{ flex: '1 0 auto' }}>
             <Typography component="div" variant="h5">
               {profileData.first_name} {profileData.last_name}
@@ -136,10 +140,17 @@ function Profile({profileData, updateSuccess, fetchUserProfile, updateUserProfil
             <Typography variant="subtitle1" color="text.secondary" component="div">
               {profileData.email}
             </Typography>
+            <ButtonGroup variant="contained" aria-label="outlined primary button group" sx={{mt: 3}}>
+              <Button onClick={() => {setOption(0)}}>PROFİLİ YENİLƏ</Button>
+              <Button onClick={() => {setOption(1)}}>ŞİFRƏNİ DƏYİŞ</Button>
+              <Button onClick={() => {setOption(2)}}>HESABI SİL</Button>
+            </ButtonGroup>
           </CardContent>
         </Box>
       </Card>
-      <Box component="form" noValidate onSubmit={e => onSubmit(e)} sx={{ mt: 3 }}>
+      {option === 0 ?
+      <Box component="form" noValidate onSubmit={e => onSubmit(e)} sx={{ mt: 1 }}>
+      <Typography component="h1" variant="h4" align='center' gutterBottom>Profili yeniləyin</Typography>
       <Grid container spacing={2}>
         <Grid item xs={12} sm={6}>
             <TextField
@@ -212,7 +223,7 @@ function Profile({profileData, updateSuccess, fetchUserProfile, updateUserProfil
       </Grid>
       <Dialog
         open={successMessage}
-        onClose={handleClose}
+        onClose={handleDialogClose}
         PaperProps={{
           style: {
             backgroundColor: '#DDF3E2',
@@ -227,7 +238,7 @@ function Profile({profileData, updateSuccess, fetchUserProfile, updateUserProfil
       </Dialog>
       <Dialog
         open={errorMessage}
-        onClose={handleClose}
+        onClose={handleDialogClose}
         PaperProps={{
           style: {
             backgroundColor: 'rgb(253, 236, 234)',
@@ -241,6 +252,7 @@ function Profile({profileData, updateSuccess, fetchUserProfile, updateUserProfil
         İstifadəçi məlumatlarınız yenilənə bilmədi!</DialogTitle>
       </Dialog>
       </Box>
+      : ( option === 1 ? <ChangePassword /> : (option === 2 ? <DeleteAccount /> : null))}
     </Container>
     );
   }

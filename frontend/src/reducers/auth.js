@@ -17,7 +17,13 @@ import {
     ACTIVATION_FAIL,
     LOGOUT,
     PROFILE_UPDATED_SUCCESS,
-    PROFILE_UPDATED_FAIL
+    PROFILE_UPDATED_FAIL,
+    RESEND_EMAIL_SUCCESS,
+    RESEND_EMAIL_FAIL,
+    DELETE_USER_SUCCESS,
+    DELETE_USER_FAIL,
+    CHANGE_PASSWORD_SUCCESS,
+    CHANGE_PASSWORD_FAIL
 } from '../actions/types';
 
 const initialState = {
@@ -104,6 +110,7 @@ export default function(state = initialState, action) {
                 updateSuccess: false
             }
         case SIGNUP_FAIL:
+        case DELETE_USER_SUCCESS:
         case LOGOUT:
             localStorage.removeItem('access');
             localStorage.removeItem('refresh');
@@ -116,10 +123,15 @@ export default function(state = initialState, action) {
                 user: null,
                 updateSuccess: false
             }
+        case CHANGE_PASSWORD_FAIL:
+        case CHANGE_PASSWORD_SUCCESS:
+        case RESEND_EMAIL_SUCCESS:
+        case RESEND_EMAIL_FAIL:
         case PASSWORD_RESET_SUCCESS:
         case PASSWORD_RESET_FAIL:
         case PASSWORD_RESET_CONFIRM_SUCCESS:
         case PASSWORD_RESET_CONFIRM_FAIL:
+        case DELETE_USER_FAIL:
         case ACTIVATION_SUCCESS:
         case ACTIVATION_FAIL:
             return {

@@ -18,7 +18,13 @@ import {
     PROFILE_LOADED_FAIL,
     PROFILE_LOADED_SUCCESS,
     PROFILE_UPDATED_FAIL,
-    PROFILE_UPDATED_SUCCESS
+    PROFILE_UPDATED_SUCCESS,
+    RESEND_EMAIL_SUCCESS,
+    RESEND_EMAIL_FAIL,
+    DELETE_USER_SUCCESS,
+    DELETE_USER_FAIL,
+    CHANGE_PASSWORD_SUCCESS,
+    CHANGE_PASSWORD_FAIL
 } from './types';
 
 export const checkAuthenticated = () => async dispatch => {
@@ -193,6 +199,82 @@ export const reset_password_confirm = (uid, token, new_password, re_new_password
     }   
 }
 
+export const resend_email = (email) => async dispatch => {
+    const config = {
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    };
+
+    const body = JSON.stringify({ email });
+
+    try {
+        await axios.post(`${process.env.REACT_APP_API_URL}/auth/users/resend_activation/`, body, config);
+
+        dispatch({
+            type: RESEND_EMAIL_SUCCESS
+        });
+    } catch (err) {
+        dispatch({
+            type: RESEND_EMAIL_FAIL
+        });
+    }   
+}
+
+export const set_password = (new_password, re_new_password, current_password) => async dispatch => {
+    const config = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `JWT ${localStorage.getItem('access')}`,
+            'Accept': 'application/json'
+        }
+    };
+
+    const body = JSON.stringify({ new_password, re_new_password, current_password });
+    console.log(body)
+
+    try {
+        const res = await axios.post(`${process.env.REACT_APP_API_URL}/auth/users/set_password/`, body, config);
+        console.log(res.data)
+        dispatch({
+            type: CHANGE_PASSWORD_SUCCESS
+        });
+    } catch (err) {
+        console.log(err.response)
+        dispatch({
+            type: CHANGE_PASSWORD_FAIL,
+            payload: err.response.data
+        });
+    }   
+}
+
+export const delete_user = (current_password) => async dispatch => {
+    const config = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `JWT ${localStorage.getItem('access')}`,
+            'Accept': 'application/json'
+        }
+    };
+
+    const body = JSON.stringify({ current_password });
+
+    try {
+        const res = await axios.delete(`${process.env.REACT_APP_API_URL}/auth/users/me/`, body, config);
+        
+        console.log(res.data)
+
+        dispatch({
+            type: DELETE_USER_SUCCESS
+        });
+    } catch (err) {
+        console.log(err)
+        dispatch({
+            type: DELETE_USER_FAIL,
+        });
+    }   
+}
+
 export const logout = () => dispatch => {
     dispatch({
         type: LOGOUT
@@ -242,13 +324,11 @@ export const updateUserProfile = (data) => async dispatch => {
             }
         }
         try {
-            const res = await axios.patch(`${process.env.REACT_APP_API_URL}/api/profile/`, form_data, config)
-            // alert("Profile Updated Successfully");
+            await axios.patch(`${process.env.REACT_APP_API_URL}/api/profile/`, form_data, config)
             dispatch({
                 type: PROFILE_UPDATED_SUCCESS,
             })
         } catch (err) {
-            // alert("Something Went Wrong... Try Again");
             dispatch({
                 type: PROFILE_UPDATED_FAIL
             })

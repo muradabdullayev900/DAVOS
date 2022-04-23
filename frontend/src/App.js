@@ -7,7 +7,7 @@ import Signup from './containers/Signup';
 import Activate from './containers/Activate';
 import ResetPassword from './containers/ResetPassword';
 import ResetPasswordConfirm from './containers/ResetPasswordConfirm';
-import Profile from './containers/Profile';
+import Profile from './containers/Profile/Profile';
 import Layout from './hocs/Layout';
 import Posts from './containers/Posts';
 import PostContextProvider from './contexts/ForumContext';
@@ -15,7 +15,7 @@ import CreatePost from './containers/Post/CreatePost';
 import './App.css';
 import PostDetail from './containers/Post/PostDetail';
 import EditPost from './containers/Post/EditPost';
-
+import Verify from './containers/Verify';
 
 function App({isAuthenticated}) {
   return (
@@ -30,6 +30,7 @@ function App({isAuthenticated}) {
         <Route exact path='/profile' element={<Profile/>} />
         <Route exact path='/forum' element={<PostContextProvider><Posts/></PostContextProvider>} />
         <Route exact path="/forum/view/:slug/" element={<PostDetail />} />
+        <Route exact path="/verify" element={<Verify />} />
         {isAuthenticated ? 
         <Fragment>
           <Route exact path='/profile' element={<Profile/>} />

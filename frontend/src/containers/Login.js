@@ -59,7 +59,7 @@ const Login = ({ login, isAuthenticated, failed }) => {
         setErrors(errors);
         setErrorsContent(errorsContent);
         return isValid;
-      }
+    }
 
     const onSubmit = e => {
         e.preventDefault();
