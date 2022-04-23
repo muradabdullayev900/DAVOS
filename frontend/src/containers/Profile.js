@@ -118,10 +118,9 @@ function Profile({profileData, updateSuccess, fetchUserProfile, updateUserProfil
       fetchUserProfile()
     }, []);
   
-    return ( profileData ?
+    return ( profileData &&
     <Container component="main" maxWidth="lg">
       <Card sx={{ display: 'flex', margin: theme.spacing(5), padding: theme.spacing(2) }}>
-      {console.log(profileData)}
         <CardMedia
           component="img"
           sx={{ width: 151 }}
@@ -243,7 +242,6 @@ function Profile({profileData, updateSuccess, fetchUserProfile, updateUserProfil
       </Dialog>
       </Box>
     </Container>
-    : <></>
     );
   }
 

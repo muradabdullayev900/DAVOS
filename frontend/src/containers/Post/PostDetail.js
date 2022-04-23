@@ -40,7 +40,7 @@ const PostDetail = ({profileData, fetchUserProfile}) => {
     const classes = useStyles();
     const {slug} = useParams();
     const [post, setPost] = useState(null);
-    const [comments, setComments] = useState(null)
+    const [comments, setComments] = useState([])
     let navigate = useNavigate(); 
 
     const getPostBody = () => {
@@ -54,14 +54,13 @@ const PostDetail = ({profileData, fetchUserProfile}) => {
         axios.get(`${process.env.REACT_APP_API_URL}/comments/` + slug)
         .then(response => {
             setComments(response.data)
-            console.log(response.data)
         }).catch(err => console.log(err))
     }
 
     useEffect(() => {
-        fetchUserProfile();
-        getPostBody();
-        getCommentsList();
+        fetchUserProfile()
+        .then(() => getPostBody())
+        .then(() => getCommentsList())
     }, [])
 
     const renderWholePage = () => {
@@ -99,9 +98,9 @@ const PostDetail = ({profileData, fetchUserProfile}) => {
                         </Fragment> : null
                     }
                     >
-                    {post.author == profileData.id ? 
+                    {/* {post.author == profileData.id ? 
                     console.log("HELLO")
-                    : null}
+                    : null} */}
                     </CardHeader>
                     <Divider />
                     <CardContent>
@@ -121,12 +120,10 @@ const PostDetail = ({profileData, fetchUserProfile}) => {
                 </Card>
                 </Grid>
                 : <></> : <></>}
-                {profileData ? 
-                <CreateComment slug={slug} refresh={renderWholePage} profileData={profileData}/>
-                : null }
-                {comments ? 
-                <Comments commentsList={comments} />
-                : null}
+                {profileData && 
+                <CreateComment slug={slug} refresh={renderWholePage} profileData={profileData}/>}
+                {comments.length !== 0 &&
+                <Comments commentsList={comments} />}
                 </Grid>
             </Container>
         </ThemeProvider>
