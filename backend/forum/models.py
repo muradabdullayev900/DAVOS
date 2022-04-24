@@ -19,6 +19,14 @@ class Post(models.Model):
         return self.title
 
     @property
+    def comments_list(self):
+        return self.comments.filter(is_displayed=True)
+
+    @property
+    def total_comments(self):
+        return self.comments_list.count()
+
+    @property
     def author_full_name(self):
         try:
             return f'{self.author.first_name} {self.author.last_name}'

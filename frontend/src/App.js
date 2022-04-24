@@ -30,7 +30,9 @@ function App({isAuthenticated}) {
         <Route exact path='/profile' element={<Profile/>} />
         <Route exact path='/forum' element={<PostContextProvider><Posts/></PostContextProvider>} />
         <Route exact path="/forum/view/:slug/" element={<PostDetail />} />
+        <Route exact path="/forum/create-new-post" element={<CreatePost />} />
         <Route exact path="/verify" element={<Verify />} />
+        <Route exact path="/forum/:slug/edit" element={<EditPost />} />
         {isAuthenticated ? 
         <Fragment>
           <Route exact path='/profile' element={<Profile/>} />

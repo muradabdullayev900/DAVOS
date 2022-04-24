@@ -1,10 +1,8 @@
 import React, {useState} from 'react';
-import { Navigate } from 'react-router-dom';
 import { connect } from 'react-redux';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { delete_user, logout } from '../../actions/auth';
 import ErrorIcon from '@mui/icons-material/Error';
 import { makeStyles } from '@mui/styles';
@@ -14,13 +12,10 @@ import DialogTitle from '@mui/material/DialogTitle';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import { green } from '@mui/material/colors';
 import Typography from '@mui/material/Typography';
-import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 
-
-const theme = createTheme();
 
 const useStyles = makeStyles((theme) => ({
   alert: {

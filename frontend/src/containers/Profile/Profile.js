@@ -21,6 +21,8 @@ import { green, red } from '@mui/material/colors';
 import ButtonGroup from '@mui/material/ButtonGroup';
 import ChangePassword from './ChangePassword';
 import DeleteAccount from './DeleteAccount';
+import { useNavigate } from 'react-router-dom';
+
 
 
 const useStyles = makeStyles((theme) => ({
@@ -40,7 +42,7 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-function Profile({profileData, updateSuccess, fetchUserProfile, updateUserProfile}) {
+function Profile({isAuthenticated, profileData, updateSuccess, fetchUserProfile, updateUserProfile}) {
     const theme = useTheme();
     const classes = useStyles();
     const [formData, setFormData] = useState({
@@ -54,6 +56,7 @@ function Profile({profileData, updateSuccess, fetchUserProfile, updateUserProfil
     const [successMessage, setSuccessMessage] = useState(false);
     const [errorMessage, setErrorMessage] = useState(false);
     const [option, setOption] = useState(0);
+    const navigate = useNavigate()
 
     const { first_name, last_name, email} = formData;
 
@@ -119,8 +122,13 @@ function Profile({profileData, updateSuccess, fetchUserProfile, updateUserProfil
     }
 
     useEffect(() => {
+      if (!localStorage.getItem('access')) {
+        console.log(isAuthenticated)
+        navigate('/forum')
+      }
       fetchUserProfile()
     }, []);
+
   
     return ( profileData &&
     <Container component="main" maxWidth="lg">
@@ -259,7 +267,8 @@ function Profile({profileData, updateSuccess, fetchUserProfile, updateUserProfil
 
 const mapStateToProps = state => ({
   profileData: state.auth.profileData,
-  updateSuccess: state.auth.updateSuccess
+  updateSuccess: state.auth.updateSuccess,
+  isAuthenticated: state.auth.isAuthenticated,
 })
 
 

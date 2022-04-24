@@ -80,6 +80,10 @@ const CreatePost = ({postAdded, post, sendNewPostToServer}) => {
         }
     };
 
+    if (!localStorage.getItem('access')){
+        navigate('/forum')
+    }
+
     return (
         <ThemeProvider theme={theme}>
             <CssBaseline />
@@ -165,7 +169,7 @@ const CreatePost = ({postAdded, post, sendNewPostToServer}) => {
 
 const mapStateToProps = state => ({
     postAdded: state.post.postAdded,
-    post: state.post.post
+    post: state.post.post,
 })
 
 export default connect(mapStateToProps, { sendNewPostToServer })(CreatePost);

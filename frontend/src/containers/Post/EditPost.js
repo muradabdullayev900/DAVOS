@@ -15,7 +15,7 @@ import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import { green, red } from '@mui/material/colors';
-import {useNavigate, useParams} from 'react-router-dom';
+import {useNavigate, useParams, Navigate} from 'react-router-dom';
 import axios from 'axios';
 import { editPost } from '../../actions/post';
 
@@ -30,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-const EditPost = ({editPost}) => {
+const EditPost = ({ editPost}) => {
     const classes = useStyles();
     const [successMessage, setSuccessMessage] = useState(false);
     const [errorMessage, setErrorMessage] = useState(false);
@@ -48,9 +48,11 @@ const EditPost = ({editPost}) => {
     }
 
     useEffect(() => {
+        if (!localStorage.getItem('access')) {
+            navigate('/forum')
+        }
         getPostBody();
     }, [])
-
 
     const onChange = e => setPost({...post, [e.target.name]: e.target.value});
 
@@ -174,7 +176,7 @@ const EditPost = ({editPost}) => {
 };
 
 const mapStateToProps = state => ({
-    post: state.post.post
+    post: state.post.post,
 })
 
 export default connect(mapStateToProps, { editPost })(EditPost);

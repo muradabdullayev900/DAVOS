@@ -1,4 +1,5 @@
 import axios from 'axios';
+import React from 'react';
 import {
     LOGIN_SUCCESS,
     LOGIN_FAIL,
@@ -26,6 +27,7 @@ import {
     CHANGE_PASSWORD_SUCCESS,
     CHANGE_PASSWORD_FAIL
 } from './types';
+
 
 export const checkAuthenticated = () => async dispatch => {
     if (localStorage.getItem('access')) {
@@ -279,6 +281,7 @@ export const logout = () => dispatch => {
     dispatch({
         type: LOGOUT
     })
+    window.location.reload()
 }
 
 export const fetchUserProfile = () => async dispatch => {

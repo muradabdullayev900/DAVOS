@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from .models import Post
+from comment.serializers import CommentSerializer
 
 class PostSerializer(serializers.ModelSerializer):
     class Meta:
@@ -9,19 +10,22 @@ class PostSerializer(serializers.ModelSerializer):
 
 class PostListSerializer(serializers.ModelSerializer):
 	# author = serializers.StringRelatedField()
-	author_full_name = serializers.CharField()
+    total_comments = serializers.IntegerField()
+    author_full_name = serializers.CharField()
 
-	class Meta:
-		model = Post
-		fields = ('author', 'slug', 'title', 'content', 'author_full_name', 'published_on', 'user_profile')
+    class Meta:
+        model = Post
+        fields = ('author', 'slug', 'title', 'content', 'author_full_name', 'published_on', 'user_profile', 'total_comments')
 
 
 class PostDetailSerializer(serializers.ModelSerializer):
-	author_full_name = serializers.CharField()
+    comments_list = CommentSerializer(many=True)
+    total_comments = serializers.IntegerField()
+    author_full_name = serializers.CharField()
 
-	class Meta:
-		model = Post
-		fields = ('author', 'slug', 'title', 'content', 'author_full_name', 'published_on', 'user_profile')
+    class Meta:
+        model = Post
+        fields = ('author', 'slug', 'title', 'content', 'author_full_name', 'published_on', 'user_profile', 'comments_list', 'total_comments')
 
 
 class PostCreateSerializer(serializers.ModelSerializer):

@@ -1,23 +1,18 @@
 import React, { Fragment, useState, useEffect } from 'react';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
-import { useParams, useNavigate, Navigate } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Card from '@mui/material/Card';
-import CardActionArea from '@mui/material/CardActionArea';
 import CardHeader from '@mui/material/CardHeader';
-import CardMedia from '@mui/material/CardMedia';
 import CardContent from '@mui/material/CardContent';
 import Avatar from '@mui/material/Avatar';
-import { red } from '@mui/material/colors';
 import Divider from '@mui/material/Divider';
 import { fetchUserProfile } from '../../actions/auth';
 import { deletePost } from '../../actions/post';
 import { connect } from 'react-redux';
-import IconButton from '@mui/material/IconButton';
 import Comments from '../Comment/Comments';
 import Grid from '@mui/material/Grid';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
@@ -36,7 +31,7 @@ const useStyles = makeStyles((theme) =>
 const theme = createTheme();
 
 
-const PostDetail = ({profileData, fetchUserProfile}) => {
+const PostDetail = ({profileData, isAuthenticated, fetchUserProfile}) => {
     const classes = useStyles();
     const {slug} = useParams();
     const [post, setPost] = useState(null);
@@ -47,6 +42,7 @@ const PostDetail = ({profileData, fetchUserProfile}) => {
         axios.get(`${process.env.REACT_APP_API_URL}/api/view/` + slug)
         .then(response => {
             setPost(response.data)
+            console.log(response.data)
         }).catch(err => console.log(err))
     }
 
@@ -58,6 +54,10 @@ const PostDetail = ({profileData, fetchUserProfile}) => {
     }
 
     useEffect(() => {
+        if (!localStorage.getItem('access')) {
+            console.log(isAuthenticated)
+            navigate('/forum')
+        }
         fetchUserProfile()
         .then(() => getPostBody())
         .then(() => getCommentsList())
@@ -77,7 +77,7 @@ const PostDetail = ({profileData, fetchUserProfile}) => {
                     direction="row"
                     justifyContent="center"
                 >
-            {post ? profileData ?
+            {post ? 
                 <Grid item xs={12}>
                 <Card>
                     <CardHeader
@@ -87,7 +87,8 @@ const PostDetail = ({profileData, fetchUserProfile}) => {
                     title={post.author_full_name}
                     subheader={new Date(post.published_on).toDateString()}
                     action={
-                        post.author === profileData.id ? 
+                        isAuthenticated &&
+                        post.author === profileData.id &&
                         <Fragment>
                             <Button href={"/forum/" + post.slug + "/edit/"} color="inherit" variant="outlined" sx={{ my: 1, mx: 1.5 }}>
                                 YENİLƏ
@@ -95,7 +96,7 @@ const PostDetail = ({profileData, fetchUserProfile}) => {
                             <Button href={"/forum/"} onClick={deletePost(post.slug)} color="inherit" variant="outlined" sx={{ my: 1, mx: 1.5 }}>
                                 SİL
                             </Button>
-                        </Fragment> : null
+                        </Fragment>
                     }
                     >
                     {/* {post.author == profileData.id ? 
@@ -110,6 +111,9 @@ const PostDetail = ({profileData, fetchUserProfile}) => {
                         <Typography variant="subtitle1" paragraph>
                         {post.content}
                         </Typography>
+                        <Typography variant="caption" paragraph>
+                        {post.total_comments} Rəy
+                        </Typography>
                     </CardContent>
                     {/* <CardMedia
                         component="img"
@@ -119,10 +123,10 @@ const PostDetail = ({profileData, fetchUserProfile}) => {
                     /> */}
                 </Card>
                 </Grid>
-                : <></> : <></>}
-                {profileData && 
+                : <></> }
+                {isAuthenticated && profileData && 
                 <CreateComment slug={slug} refresh={renderWholePage} profileData={profileData}/>}
-                {comments.length !== 0 &&
+                { isAuthenticated && comments.length !== 0 &&
                 <Comments commentsList={comments} />}
                 </Grid>
             </Container>
@@ -131,6 +135,7 @@ const PostDetail = ({profileData, fetchUserProfile}) => {
 };
 const mapStateToProps = state => ({
     profileData: state.auth.profileData,
+    isAuthenticated: state.auth.isAuthenticated,
 })
   
   
