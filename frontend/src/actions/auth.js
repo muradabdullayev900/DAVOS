@@ -130,10 +130,12 @@ export const signup = (first_name, last_name, email, password, re_password) => a
             type: SIGNUP_SUCCESS,
             payload: res.data
         });
+        return res.data
     } catch (err) {
         dispatch({
             type: SIGNUP_FAIL
         })
+        return err.response.data
     }
 };
 

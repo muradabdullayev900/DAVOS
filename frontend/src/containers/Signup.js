@@ -41,6 +41,8 @@ const Signup = ({ signup, isAuthenticated }) => {
 
     const [errors, setErrors] = useState(false);
     const [errorsContent, setErrorsContent] = useState('');
+    const [alerts, setAlerts] = useState({'email': false, 'password': false});
+    const alertsContent = { 'email': 'Bu e-poçtla istifadəçi hesabı artıq mövcuddur.', 'password': 'Parolunuz e-poçtunuza çox bənzəyir.'};
 
     const { first_name, last_name, email, password, re_password } = formData;
 
@@ -48,10 +50,24 @@ const Signup = ({ signup, isAuthenticated }) => {
 
     const onSubmit = e => {
         e.preventDefault();
+        setAlerts({'email': false, 'password': false})
         if (validate()) {
             signup(first_name, last_name, email, password, re_password)
-            setAccountCreated(true)
-        }
+            .then((res) => {
+              console.log(res)
+              if (res.hasOwnProperty('email')) {
+                if (res.email == 'user account with this email already exists.') {
+                    setAlerts({"email": true, "password": false});
+                }
+              } else if (res.hasOwnProperty('password')) {
+                if (res.password == 'The password is too similar to the email.') {
+                  setAlerts({"email": false, "password": true});
+              }
+              } else {
+                setAccountCreated(true)
+              }
+            })
+}
     };
 
     const validate = () => {
@@ -178,6 +194,7 @@ const Signup = ({ signup, isAuthenticated }) => {
                         autoComplete="email"
                         />
                         {errors["email"] && <div className={classes.alert}>{<ErrorIcon fontSize="small"/>} {errorsContent["email"]}</div>}
+                        {alerts["email"] && <div className={classes.alert}>{<ErrorIcon fontSize="small"/>} {alertsContent["email"]}</div>}
                     </Grid>
                     <Grid item xs={12}>
                         <TextField
@@ -194,6 +211,7 @@ const Signup = ({ signup, isAuthenticated }) => {
                         />
                         {errors["password"] && <div className={classes.alert}>{<ErrorIcon fontSize="small"/>} {errorsContent["password"]}</div>}
                         {errors["EnterPassword"] && <div className={classes.alert}>{<ErrorIcon fontSize="small"/>} {errorsContent["EnterPassword"]}</div>}
+                        {alerts["password"] && <div className={classes.alert}>{<ErrorIcon fontSize="small"/>} {alertsContent["password"]}</div>}
                     </Grid>
                     <Grid item xs={12}>
                         <TextField
