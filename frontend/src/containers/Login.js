@@ -66,9 +66,13 @@ const Login = ({ login, isAuthenticated, failed }) => {
         setAlertsContent('');
         if (validate()) {
             login(email, password)
-            if (failed) {
-                setAlertsContent("E-poçt və ya parol yanlışdır.");
-            }
+            .then((res) => {
+                if (res.hasOwnProperty('detail')) {
+                    if (res.detail === "No active account found with the given credentials") {
+                        setAlertsContent("E-poçt və ya parol yanlışdır.");
+                    }
+                }
+            })
         }
     };
 
