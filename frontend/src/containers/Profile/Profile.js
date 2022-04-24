@@ -12,7 +12,6 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import { fetchUserProfile, updateUserProfile } from '../../actions/auth';
 import { connect } from 'react-redux';
-import validator from 'validator';
 import ErrorIcon from '@mui/icons-material/Error';
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
@@ -70,56 +69,24 @@ function Profile({isAuthenticated, profileData, updateSuccess, fetchUserProfile,
 
     const onSubmit = e => {
       e.preventDefault();
-      if (validate()) {
-        let updatedProfile = {}
-        for (let key in formData) {
-          if (formData[key] !== '' || formData[key] !== null) {
-            updatedProfile[key] = formData[key]
-          }
-          else {
-            updatedProfile[key] = profileData[key]
-          }
+      let updatedProfile = {}
+      for (let key in formData) {
+        if (formData[key] !== '') {
+          updatedProfile[key] = formData[key]
+        } else {
+          updatedProfile[key] = profileData[key]
         }
-        updateUserProfile(updatedProfile)
-        .then(() => fetchUserProfile())
-        .then(() => setSuccessMessage(true))
-        .catch((err) => setErrorMessage(true))
       }
-    };
+      updateUserProfile(updatedProfile)
+      .then(() => fetchUserProfile())
+      .then(() => setSuccessMessage(true))
+      .catch((err) => setErrorMessage(true))
+    }
 
     const handleDialogClose = () => {
       setSuccessMessage(false);
       setErrorMessage(false);
     };
-
-    const validate = () => {
-      let errors = {};
-      let errorsContent = {"name":false,"email":false};
-      let isValid = true;
-      if (!first_name || !last_name){
-        isValid = false;
-        errors["name"] = true;
-        errorsContent["name"] = "Ad və Soyad daxil edin.";
-      }
-      if (!validator.isEmail(email)) {
-        isValid = false;
-        errors["email"] = true;
-        errorsContent["email"] = "E-poçt ünvanı etibarlı deyil.";
-      }
-      if (email.length < 6){
-        isValid = false;
-        errors["email"] = true;
-        errorsContent["email"] = "E-poçt ünvanı üçün 6 və daha artıq simvoldan istifadə edin.";
-      }
-      if (!email) {
-        isValid = false;
-        errors["email"] = true;
-        errorsContent["email"] = "E-poçt ünvanı daxil edin.";
-      }
-      setErrors(errors);
-      setErrorsContent(errorsContent);
-      return isValid;
-    }
 
     useEffect(() => {
       if (!localStorage.getItem('access')) {
@@ -130,7 +97,7 @@ function Profile({isAuthenticated, profileData, updateSuccess, fetchUserProfile,
     }, []);
 
   
-    return ( profileData &&
+    return ( profileData ?
     <Container component="main" maxWidth="lg">
       <Card sx={{ display: 'flex', margin: theme.spacing(5), padding: theme.spacing(2) }}>
         <CardMedia
@@ -169,7 +136,7 @@ function Profile({isAuthenticated, profileData, updateSuccess, fetchUserProfile,
             id="first_name"
             label="Ad"
             autoFocus
-            value={first_name}
+            defaultValue={profileData.first_name}
             onChange={e => onChange(e)}
             />
             {errors["name"] && <div className={classes.alert}> {<ErrorIcon fontSize="small"/>} {errorsContent["name"]} </div>}
@@ -182,7 +149,7 @@ function Profile({isAuthenticated, profileData, updateSuccess, fetchUserProfile,
             label="Soyad"
             name='last_name'
             autoComplete="family-name"
-            value={last_name}
+            defaultValue={profileData.last_name}
             onChange={e => onChange(e)}
             />
         </Grid>
@@ -194,7 +161,7 @@ function Profile({isAuthenticated, profileData, updateSuccess, fetchUserProfile,
             label="E-poçt"
             name='email'
             autoComplete="email"
-            value={email}
+            defaultValue={profileData.email}
             onChange={e => onChange(e)}
             />
             {errors["email"] && <div className={classes.alert}>{<ErrorIcon fontSize="small"/>} {errorsContent["email"]}</div>}
@@ -261,7 +228,7 @@ function Profile({isAuthenticated, profileData, updateSuccess, fetchUserProfile,
       </Dialog>
       </Box>
       : ( option === 1 ? <ChangePassword /> : (option === 2 ? <DeleteAccount /> : null))}
-    </Container>
+    </Container> : null
     );
   }
 

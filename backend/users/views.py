@@ -31,6 +31,7 @@ class UserProfileView(generics.RetrieveUpdateAPIView):
         # print(serializer.data)
         # return Response(serializer.data)
         instance = self.request.user
+        print(instance)
         serializer = self.get_serializer(instance)
         return Response(serializer.data)
 

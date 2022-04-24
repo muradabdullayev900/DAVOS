@@ -54,9 +54,6 @@ const PostDetail = ({profileData, isAuthenticated, fetchUserProfile}) => {
     }
 
     useEffect(() => {
-        if (!localStorage.getItem('access')) {
-            navigate('/forum')
-        }
         fetchUserProfile()
         .then(() => getPostBody())
         .then(() => getCommentsList())

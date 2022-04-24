@@ -1,5 +1,4 @@
 import axios from 'axios';
-import React from 'react';
 import {
     LOGIN_SUCCESS,
     LOGIN_FAIL,
@@ -327,7 +326,7 @@ export const updateUserProfile = (data) => async dispatch => {
             }
         }
         try {
-            await axios.patch(`${process.env.REACT_APP_API_URL}/api/profile/`, form_data, config)
+            await axios.patch(`${process.env.REACT_APP_API_URL}/api/profile`, form_data, config)
             dispatch({
                 type: PROFILE_UPDATED_SUCCESS,
             })
