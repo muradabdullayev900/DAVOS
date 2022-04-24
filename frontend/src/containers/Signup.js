@@ -54,7 +54,6 @@ const Signup = ({ signup, isAuthenticated }) => {
         if (validate()) {
             signup(first_name, last_name, email, password, re_password)
             .then((res) => {
-              console.log(res)
               if (res.hasOwnProperty('email')) {
                 if (res.email == 'user account with this email already exists.') {
                     setAlerts({"email": true, "password": false});

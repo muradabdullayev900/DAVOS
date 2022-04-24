@@ -106,7 +106,7 @@ export const login = (email, password) => async dispatch => {
         })
 
         dispatch(load_user());
-        return res.data
+        return {'success': 'account created'}
     }
     catch (err) {
         dispatch({
@@ -130,7 +130,7 @@ export const signup = (first_name, last_name, email, password, re_password) => a
             type: SIGNUP_SUCCESS,
             payload: res.data
         });
-        return res.data
+        return {'success': 'account created'}
     } catch (err) {
         dispatch({
             type: SIGNUP_FAIL
