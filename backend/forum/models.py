@@ -14,6 +14,7 @@ class Post(models.Model):
     published_on = models.DateTimeField(null=True, blank=True)
     author = models.ForeignKey(UserAccount, on_delete=models.CASCADE)
     slug = models.SlugField(blank=True, null=True)
+    image = models.ImageField(upload_to='post_images')
 
     def __str__(self):
         return self.title

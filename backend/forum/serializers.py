@@ -25,7 +25,7 @@ class PostDetailSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Post
-        fields = ('author', 'slug', 'title', 'content', 'author_full_name', 'published_on', 'user_profile', 'comments_list', 'total_comments')
+        fields = ('author', 'slug', 'title', 'content', 'author_full_name', 'published_on', 'user_profile', 'comments_list', 'total_comments', 'image')
 
 
 class PostCreateSerializer(serializers.ModelSerializer):
@@ -33,7 +33,7 @@ class PostCreateSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Post
-        fields = ('title', 'content', 'author', 'slug')
+        fields = ('title', 'content', 'author', 'slug', 'image')
 
 
 # class PostListSerializer(serializers.ModelSerializer):

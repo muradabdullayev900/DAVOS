@@ -18,6 +18,7 @@ import Grid from '@mui/material/Grid';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { createStyles, makeStyles } from '@mui/styles';
 import CreateComment from '../Comment/CreateComment';
+import Box from '@mui/material/Box';
 
 
 const useStyles = makeStyles((theme) =>
@@ -42,7 +43,6 @@ const PostDetail = ({profileData, isAuthenticated, fetchUserProfile}) => {
         axios.get(`${process.env.REACT_APP_API_URL}/api/view/` + slug)
         .then(response => {
             setPost(response.data)
-            console.log(response.data)
         }).catch(err => console.log(err))
     }
 
@@ -55,7 +55,6 @@ const PostDetail = ({profileData, isAuthenticated, fetchUserProfile}) => {
 
     useEffect(() => {
         if (!localStorage.getItem('access')) {
-            console.log(isAuthenticated)
             navigate('/forum')
         }
         fetchUserProfile()
@@ -79,6 +78,7 @@ const PostDetail = ({profileData, isAuthenticated, fetchUserProfile}) => {
                 >
             {post ? 
                 <Grid item xs={12}>
+                {console.log(post)}
                 <Card>
                     <CardHeader
                     avatar={
@@ -111,6 +111,16 @@ const PostDetail = ({profileData, isAuthenticated, fetchUserProfile}) => {
                         <Typography variant="subtitle1" paragraph>
                         {post.content}
                         </Typography>
+                        {post.image && 
+                        <Box
+                            display="flex"
+                            justifyContent="center"
+                            alignItems="center"
+                            component="img"
+                            alt={post.title}
+                            src={post.image}
+                        />
+                        }
                         <Typography variant="caption" paragraph>
                         {post.total_comments} Rəy
                         </Typography>

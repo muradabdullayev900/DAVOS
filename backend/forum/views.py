@@ -7,11 +7,11 @@ from .serializers import PostListSerializer, PostDetailSerializer, PostCreateSer
 from .models import Post
 from users.models import UserAccount
 from rest_framework import generics
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, parser_classes
 from rest_framework.response import Response
 from rest_framework import status
-from rest_framework_simplejwt.serializers import TokenVerifySerializer, TokenObtainPairSerializer, TokenObtainSerializer
-from rest_framework_simplejwt.authentication import JWTAuthentication
+from rest_framework_simplejwt.serializers import TokenVerifySerializer
+from rest_framework.parsers import MultiPartParser, FormParser
 
 # class PostListView(viewsets.ModelViewSet):
 #     serializer_class = PostListSerializer
@@ -26,14 +26,15 @@ class PostListView(generics.ListAPIView):
 class PostDetailView(generics.RetrieveAPIView):
     """View For The Details Of A Single Post"""
     queryset = Post.objects.all()
+    parser_classes = (MultiPartParser, FormParser)
     serializer_class = PostDetailSerializer
     lookup_field = 'slug'
 
 
 @api_view(['POST'])
+@parser_classes([MultiPartParser, FormParser])
 def post_create_view(request):
     """View To Create New Post For The Logged In Users"""
-
     if request.method == 'POST':
         token_type, token = request.META.get('HTTP_AUTHORIZATION').split()
         if(token_type != 'JWT'):

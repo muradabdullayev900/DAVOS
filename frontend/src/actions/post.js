@@ -9,17 +9,24 @@ import {
 } from './types';
 
 
-export const sendNewPostToServer = (postData) => async dispatch => {
+export const sendNewPostToServer = (data) => async dispatch => {
     if (localStorage.getItem('access')) {
+        console.log('data', data)
+        let form_data = new FormData();
+        console.log('image', data.image)
+        if (data.image)
+            form_data.append("image", data.image, data.image.name);
+        form_data.append("title", data.title);
+        form_data.append("content", data.content);
+        console.log(form_data)
         const config = {
             headers: {
-                'Content-Type': 'application/json',
+                'Content-Type': 'multipart/form-data',
                 'Authorization': `JWT ${localStorage.getItem('access')}`,
-                'Accept': 'application/json'
             }
         }
         try {
-            const res = await axios.post(`${process.env.REACT_APP_API_URL}/api/create-new-post`, postData, config)
+            const res = await axios.post(`${process.env.REACT_APP_API_URL}/api/create-new-post`, form_data, config)
             dispatch({
                 type: POST_ADDED_SUCCESS,
                 payload: res.data

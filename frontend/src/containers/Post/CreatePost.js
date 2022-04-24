@@ -34,11 +34,12 @@ const CreatePost = ({postAdded, post, sendNewPostToServer}) => {
     const [formData, setFormData] = useState({
         title: '',
         content: '',
+        image: null
     });
     const [successMessage, setSuccessMessage] = useState(false);
     const [errorMessage, setErrorMessage] = useState(false);
 
-    const {title, content} = formData;
+    const {title, content, image} = formData;
 
     const [errors, setErrors] = useState({});
     const [errorsContent, setErrorsContent] = useState({});
@@ -50,6 +51,13 @@ const CreatePost = ({postAdded, post, sendNewPostToServer}) => {
         if (successMessage) navigate('/forum/view/' + post.slug)
         setSuccessMessage(false);
         setErrorMessage(false);
+    };
+
+    const handleImageChange = (e) => {
+        setFormData({...formData,
+          image: e.target.files[0]
+        })
+        console.log('handleimagechange', e.target.files[0])
     };
 
     const validate = () => {
@@ -122,12 +130,33 @@ const CreatePost = ({postAdded, post, sendNewPostToServer}) => {
                         />
                         {errors["content"] && <div className={classes.alert}> {<ErrorIcon fontSize="small"/>} {errorsContent["content"]} </div>}
                     </Grid>
+                    <Grid item xs={12}>
+                    <label htmlFor="image">
+                        <input type="file"
+                        style={{ display: 'none' }}
+                        id="image"
+                        name="btn-upload"
+                        className='btn-upload'
+                        accept="image/png, image/jpeg"  onChange={e => handleImageChange(e)} required/>
+                        <Button
+                            className="btn-choose"
+                            variant="outlined"
+                            component="span" >
+                            ŞƏKİL SEÇ
+                        </Button>
+                    </label>
+                    <Grid item xs={12}>
+                        <div className="file-name">
+                        {formData.image ? formData.image.name : null}
+                        </div>
+                    </Grid>
+                    </Grid>
                 </Grid>
                 <Button
                     type="submit"
                     fullWidth
                     variant="contained"
-                    sx={{ mt: 3, mb: 2 }}
+                    sx={{ mt: 1, mb: 2 }}
                     >
                     PAYLAŞ
                 </Button>
