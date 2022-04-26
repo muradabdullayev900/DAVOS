@@ -103,10 +103,10 @@ WSGI_APPLICATION = 'DAVOS.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'davos',
-        'USER': 'root',
-        'PASSWORD': 'LiveLaugh2002',
-        'HOST': 'localhost',
+        'NAME': '[DATABASE NAME]',
+        'USER': '[USER]',
+        'PASSWORD': '[YOUR PASSWORD]',
+        'HOST': '[YOUR LOCALHOST]',
     }
 }
 
