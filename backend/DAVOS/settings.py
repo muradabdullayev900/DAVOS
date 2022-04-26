@@ -35,6 +35,7 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     'users.apps.UsersConfig',
     'forum.apps.ForumConfig',
+    'comment.apps.CommentConfig',
     'rest_framework',
     'djoser',
     'corsheaders',
@@ -45,7 +46,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework_simplejwt',
-    'rest_framework_simplejwt.token_blacklist'
+    'rest_framework_simplejwt.token_blacklist',
+    'rest_framework.authtoken'
 ]
 
 # CORS_ORIGIN_ALLOW_ALL = True
@@ -101,10 +103,10 @@ WSGI_APPLICATION = 'DAVOS.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'davos',
-        'USER': 'root',
-        'PASSWORD': 'LiveLaugh2002',
-        'HOST': 'localhost',
+        'NAME': '[DATABASE NAME]',
+        'USER': '[USER]',
+        'PASSWORD': '[YOUR PASSWORD]',
+        'HOST': '[YOUR LOCALHOST]',
     }
 }
 
@@ -212,5 +214,7 @@ DJOSER = {
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'users.UserAccount'
+
+AUTH_PROFILE_MODEL = 'users.Profile'
 
 CSRF_COOKIE_SECURE = False

@@ -15,6 +15,9 @@ const theme = createTheme();
 const Navbar = ({ logout, isAuthenticated }) => {
     const guestLinks = () => (
         <Fragment>
+            <Button href="/forum" color="inherit" variant="outlined" sx={{ my: 1, mx: 1.5 }}>
+                FORUM
+            </Button>
             <Button href="/login" color="inherit" variant="outlined" sx={{ my: 1, mx: 1.5 }}>
             DAXİL OL
             </Button>
@@ -26,6 +29,9 @@ const Navbar = ({ logout, isAuthenticated }) => {
 
     const authLinks = () => (
         <Fragment>
+            <Button href="/forum/create-new-post" color="inherit" variant="outlined" sx={{ my: 1, mx: 1.5 }}>
+                YENİ POST
+            </Button>
             <Button href="/forum" color="inherit" variant="outlined" sx={{ my: 1, mx: 1.5 }}>
                 FORUM
             </Button>
@@ -49,7 +55,7 @@ const Navbar = ({ logout, isAuthenticated }) => {
             >
             <Toolbar sx={{ flexWrap: 'wrap' }}>
                 <Typography variant="h6" color="inherit" noWrap sx={{ flexGrow: 1 }}>
-                <Link href='#' to="/" color='inherit' sx={{ textDecoration: 'none' }}>
+                <Link href='/' color='inherit' sx={{ textDecoration: 'none' }}>
                     DAVOS Forum
                 </Link>
                 </Typography>

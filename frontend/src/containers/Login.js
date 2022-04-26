@@ -59,16 +59,20 @@ const Login = ({ login, isAuthenticated, failed }) => {
         setErrors(errors);
         setErrorsContent(errorsContent);
         return isValid;
-      }
+    }
 
     const onSubmit = e => {
         e.preventDefault();
         setAlertsContent('');
         if (validate()) {
             login(email, password)
-            if (failed) {
-                setAlertsContent("E-poçt və ya parol yanlışdır.");
-            }
+            .then((res) => {
+                if (res.hasOwnProperty('detail')) {
+                    if (res.detail === "No active account found with the given credentials") {
+                        setAlertsContent("E-poçt və ya parol yanlışdır.");
+                    }
+                }
+            })
         }
     };
 
@@ -76,7 +80,7 @@ const Login = ({ login, isAuthenticated, failed }) => {
     // Navigate them to the home page
 
     if (isAuthenticated) {
-        return <Navigate to='/' />
+        return <Navigate to='/forum' />
     }
 
     return (
